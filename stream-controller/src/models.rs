@@ -14,3 +14,10 @@ pub struct IngestPoint {
 pub struct IngestPoints {
     pub ingest_points: Vec<IngestPoint>,
 }
+
+#[derive(Debug, Deserialize)]
+pub enum StreamState {
+    Pending,
+    Live,
+    Complete,
+}

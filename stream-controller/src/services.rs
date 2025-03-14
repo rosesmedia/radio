@@ -2,6 +2,7 @@ use miette::{Context, IntoDiagnostic};
 use systemd_zbus::{ManagerProxy, Mode};
 
 const INGEST_UNIT: &str = "liq-ingest";
+const STREAMER_UNIT: &str = "liq-streamer";
 
 #[derive(Clone)]
 pub struct ServiceManager {
@@ -61,6 +62,10 @@ impl ServiceManager {
         format!("{INGEST_UNIT}@{id}.service")
     }
 
+    fn streamer_unit_name(&self, id: &str) -> String {
+        format!("{STREAMER_UNIT}@{id}.service")
+    }
+
     pub async fn start_ingest(&self, id: &str) -> miette::Result<()> {
         self.start(&self.ingest_unit_name(id))
             .await
@@ -77,5 +82,17 @@ impl ServiceManager {
         self.stop(&self.ingest_unit_name(id))
             .await
             .with_context(|| format!("stopping ingest {id}"))
+    }
+
+    pub async fn start_streamer(&self, id: &str) -> miette::Result<()> {
+        self.start(&self.streamer_unit_name(id))
+            .await
+            .with_context(|| format!("starting streamer {id}"))
+    }
+
+    pub async fn stop_streamer(&self, id: &str) -> miette::Result<()> {
+        self.stop(&self.streamer_unit_name(id))
+            .await
+            .with_context(|| format!("starting streamer {id}"))
     }
 }

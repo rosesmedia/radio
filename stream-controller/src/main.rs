@@ -1,5 +1,7 @@
 use miette::{Context, IntoDiagnostic};
-use stream_controller::{client::ApiClient, routes, services::ServiceManager, AppState};
+use stream_controller::{
+    client::ApiClient, jack::JackManager, routes, services::ServiceManager, AppState,
+};
 use tracing_subscriber::prelude::*;
 
 #[cfg(debug_assertions)]
@@ -21,6 +23,7 @@ async fn main() -> miette::Result<()> {
     let client = ApiClient::new(&api_base);
 
     let service_manager = ServiceManager::new().await?;
+    let jack_manager = JackManager::new();
 
     let ingest_points = client
         .get_ingest_points()
@@ -40,7 +43,10 @@ async fn main() -> miette::Result<()> {
 
     let bind_addr = format!("{host}:{port}");
 
-    let app = routes::routes().with_state(AppState { service_manager });
+    let app = routes::routes().with_state(AppState {
+        service_manager,
+        jack_manager,
+    });
 
     let listener = tokio::net::TcpListener::bind(bind_addr)
         .await
