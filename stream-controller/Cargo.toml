@@ -1,0 +1,15 @@
+[package]
+name = "stream-controller"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.8.1"
+miette = { version = "7.5.0", features = ["fancy"] }
+reqwest = { version = "0.12.14", default-features = false, features = ["json", "rustls-tls"] }
+serde = "1.0.219"
+systemd-zbus = "5.2.0"
+tokio = { version = "1.44.0", features = ["full"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+zbus = { version = "5.5.0", features = ["tokio"] }
