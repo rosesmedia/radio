@@ -18,7 +18,7 @@ impl JackManager {
             .status()
             .await
             .into_diagnostic()
-            .with_context(|| format!("executing jack_connect"))?;
+            .with_context(|| "executing jack_connect")?;
         if !result.success() {
             miette::bail!("command returned non-zero exit code: {:?}", result.code());
         }
@@ -43,7 +43,15 @@ impl JackManager {
         format!("streamer_{stream_id}")
     }
 
-    pub async fn patch_ingest_to_stream(&self, ingest_id: &str, stream_id: &str) -> miette::Result<()> {
-        self.patch_stereo(&self.ingest_jack_name(ingest_id), &self.streamer_jack_name(stream_id)).await
+    pub async fn patch_ingest_to_stream(
+        &self,
+        ingest_id: &str,
+        stream_id: &str,
+    ) -> miette::Result<()> {
+        self.patch_stereo(
+            &self.ingest_jack_name(ingest_id),
+            &self.streamer_jack_name(stream_id),
+        )
+        .await
     }
 }
