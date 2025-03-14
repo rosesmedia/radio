@@ -31,8 +31,7 @@ async fn main() -> miette::Result<()> {
         service_manager.start_ingest(&ingest.id).await?;
     }
 
-    let host = std::env::var("HOST")
-        .unwrap_or_else(|_| "127.0.0.1".to_string());
+    let host = std::env::var("HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
 
     let port: u16 = std::env::var("PORT")
         .unwrap_or_else(|_| "1350".to_string())
