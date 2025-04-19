@@ -7,7 +7,7 @@ use axum::{
 use reqwest::StatusCode;
 use serde::Serialize;
 
-use crate::AppState;
+use crate::{auth, AppState};
 
 #[derive(Serialize)]
 #[serde(untagged)]
@@ -87,4 +87,5 @@ pub fn routes() -> Router<AppState> {
             "/stream/{stream_id}/patch/{ingest_id}",
             post(patch_streamer),
         )
+        .layer(axum::middleware::from_fn(auth::auth_middleware))
 }

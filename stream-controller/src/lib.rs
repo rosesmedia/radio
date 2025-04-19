@@ -1,6 +1,7 @@
 use jack::JackManager;
 use services::ServiceManager;
 
+pub mod auth;
 pub mod client;
 pub mod jack;
 pub mod models;

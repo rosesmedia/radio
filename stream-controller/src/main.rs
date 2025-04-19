@@ -20,7 +20,8 @@ async fn main() -> miette::Result<()> {
 
     let api_base = std::env::var("STREAM_API_BASE")
         .expect("environment variable `STREAM_API_BASE` must be set");
-    let client = ApiClient::new(&api_base);
+    let stream_api_token = std::env::var("STREAM_API_TOKEN").expect("`STREAM_API_TOKEN` environment variable to be set");
+    let client = ApiClient::new(api_base, stream_api_token);
 
     let service_manager = ServiceManager::new().await?;
     let jack_manager = JackManager::new();
