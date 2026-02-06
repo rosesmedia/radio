@@ -31,12 +31,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'livestreams.apps.LivestreamsConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -83,6 +87,18 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+    'social_core.backends.open_id_connect.OpenIdConnectAuth',
+]
+
+SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = 'https://account.shorks.gay/realms/ash-testing'
+SOCIAL_AUTH_OIDC_KEY = 'local-dev'
+SOCIAL_AUTH_OIDC_SECRET = 'hQn6OqycfdlPSWlLdZsHbSuYmxReUFB6'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

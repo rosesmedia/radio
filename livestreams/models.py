@@ -1,3 +1,21 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
+class Livestream(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "P", _("Pending")
+        LIVE = "L", _("Live")
+        ENDED = "E", _("Ended")
+
+    name = models.CharField()
+    slug = models.SlugField()
+    scheduled_start = models.DateTimeField("scheduled start")
+
+    status = models.CharField(
+        max_length=1,
+        choices=Status,
+        default=Status.PENDING,
+    )
+
+    def __str__(self):
+        return f'{self.name} ({Livestream.Status(self.status).label})'
