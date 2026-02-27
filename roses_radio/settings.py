@@ -88,13 +88,13 @@ DATABASES = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend'
+    'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.open_id_connect.OpenIdConnectAuth',
 ]
 
-SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = 'https://account.shorks.gay/realms/ash-testing'
-SOCIAL_AUTH_OIDC_KEY = 'local-dev'
-SOCIAL_AUTH_OIDC_SECRET = 'hQn6OqycfdlPSWlLdZsHbSuYmxReUFB6'
+SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = ''
+SOCIAL_AUTH_OIDC_KEY = ''
+SOCIAL_AUTH_OIDC_SECRET = ''
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
