@@ -19,3 +19,13 @@ class Livestream(models.Model):
 
     def __str__(self):
         return f'{self.name} ({Livestream.Status(self.status).label})'
+
+class LivestreamTag(models.Model):
+    livestream = models.ForeignKey(Livestream, on_delete=models.CASCADE)
+    tag = models.CharField()
+
+    def __str__(self):
+        return self.tag
+
+    class Meta:
+        unique_together = ('livestream', 'tag')

@@ -1,3 +1,5 @@
 /.direnv
 postgres_data
 __pycache__/
+# TODO: come up with a better way
+/roses_radio/settings.py
