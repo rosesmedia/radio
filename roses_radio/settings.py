@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'livestreams.apps.LivestreamsConfig',
+    'catchup.apps.CatchupConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
