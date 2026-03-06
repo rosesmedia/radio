@@ -5,3 +5,4 @@ __pycache__/
 /roses_radio/settings.py
 /uploads
 /rabbitmq
+/ome_log

@@ -26,3 +26,14 @@ services:
     volumes:
       - ./rabbitmq/data:/var/lib/rabbitmq
       - ./rabbitmq/log:/var/log/rabbitmq
+  ome:
+    image: "airensoft/ovenmediaengine:v0.20.0"
+    ports:
+      - "8081:8081/tcp" # API
+      - "9999:9999/udp" # SRT ingest
+      - "9998:9998/udp" # SRT publishing
+      - "3333:3333/tcp" # HLS
+    volumes:
+      - "./conf/OME_Server.dev.xml:/opt/ovenmediaengine/bin/origin_conf/Server.xml:ro"
+      - "./conf/OME_Vhost.dev.xml:/opt/ovenmediaengine/bin/origin_conf/vhosts/dev.xml:ro"
+      - "./ome_log:/var/log/ovenmediaengine"

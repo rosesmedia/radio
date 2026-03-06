@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<VirtualHost>
+    <Name>default</Name>
+    <Host>
+        <Names>
+            <Name>*</Name>
+        </Names>
+        <!-- TODO: TLS? -->
+    </Host>
+    <Applications>
+        <Application>
+            <Name>roses</Name>
+            <Type>live</Type>
+
+            <OutputProfiles>
+                <OutputProfile>
+                    <Name>output_stream</Name>
+                    <OutputStreamName>${OriginStreamName}</OutputStreamName>
+                    <Encodes>
+                        <Audio>
+                            <Bypass>true</Bypass>
+                        </Audio>
+                        <Video>
+                            <Bypass>true</Bypass>
+                        </Video>
+                    </Encodes>
+                </OutputProfile>
+            </OutputProfiles>
+
+            <Providers>
+                <SRT />
+            </Providers>
+
+            <Publishers>
+                <LLHLS>
+                    <ChunkDuration>0.6</ChunkDuration>
+                    <SegmentDuration>4</SegmentDuration>
+                    <SegmentCount>10</SegmentCount>
+                    <CrossDomains>
+                        <Url>*</Url>
+                    </CrossDomains>
+
+                    <DVR>
+                        <Enable>true</Enable>
+                        <TempStoragePath>/tmp/ome_hls</TempStoragePath>
+                        <MaxDuration>3600</MaxDuration> <!-- TODO: increase in production -->
+                    </DVR>
+                </LLHLS>
+
+                <SRT />
+            </Publishers>
+        </Application>
+    </Applications>
+</VirtualHost>
