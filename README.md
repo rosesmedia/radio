@@ -1,4 +1,6 @@
-# Roses Radio
+# R.A.D.I.O.
+
+Roses Audio Distribution Interface and Orchestration
 
 The backend for Roses 2026 radio streaming.
 
