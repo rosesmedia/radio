@@ -21,9 +21,11 @@
         devShells.default = pkgs.mkShell {
           LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath(with pkgs; [
             libpq
+            file
           ])}";
           nativeBuildInputs = with pkgs; [
             libpq
+            file
             (python313.withPackages devDependencies)
             uv
           ];
