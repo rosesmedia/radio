@@ -7,5 +7,6 @@ requires-python = ">=3.13"
 dependencies = [
     "django>=6.0.2",
     "psycopg>=3.3.2",
+    "python-magic>=0.4.27",
     "social-auth-app-django>=5.7.0",
 ]

@@ -2,6 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from catchup.validators import validate_is_audio
+
+
 class Episode(models.Model):
     class Status(models.TextChoices):
         PROCESSING = "P", _("Processing")
@@ -11,6 +14,8 @@ class Episode(models.Model):
     slug = models.SlugField()
     uploaded_at = models.DateTimeField("uploaded at", auto_now_add=True)
     publish_at = models.DateTimeField("publish at", default=timezone.now)
+
+    original_file = models.FileField(upload_to="episodes/%Y/%m/%d/originals/", null=True, default=None, validators=[validate_is_audio])
 
     status = models.CharField(
         max_length=1,
