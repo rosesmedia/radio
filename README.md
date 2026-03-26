@@ -6,9 +6,14 @@ The backend for Roses 2026 radio streaming.
 
 ## Architecture
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/docs/radio-1.0-dark.png">
+  <img alt="architecture diagram" src="/docs/radio-1.0.png">
+</picture>
+
 The main application is a [django](https://www.djangoproject.com/) project, using PostgreSQL as a database.
 
-Streaming will be handled using a combination of [liquidsoap](https://liquidsoap.info) and [mediamtx](https://mediamtx.org).
+Streaming will be handled using a combination of [liquidsoap](https://liquidsoap.info) and [OvenMediaEngine](https://docs.ovenmediaengine.com).
 
 See [radio-tx](https://github.com/rosesmedia/radio-tx) (used at Roses 2025), which used a similar architecture.
 
