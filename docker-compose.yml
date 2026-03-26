@@ -9,3 +9,15 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+  rabbitmq:
+    hostname: rabbitmq-radio
+    image: "rabbitmq:4.2.4-management-alpine"
+    ports:
+      - "5672:5672/tcp"
+      - "15672:15672/tcp"
+    environment:
+      RABBITMQ_DEFAULT_USER: radio
+      RABBITMQ_DEFAULT_PASS: radio
+    volumes:
+      - ./rabbitmq/data:/var/lib/rabbitmq
+      - ./rabbitmq/log:/var/log/rabbitmq
