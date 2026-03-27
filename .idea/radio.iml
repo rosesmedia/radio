@@ -11,9 +11,6 @@
         <option name="trackFilePattern" value="" />
       </configuration>
     </facet>
-    <facet type="Python" name="Python">
-      <configuration sdkName="" />
-    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
