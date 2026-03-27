@@ -47,6 +47,7 @@ def loudnorm(input_path: str, output_path: str, target_lufs: float=-12, target_l
         '-y',
         '-i', input_path,
         '-af', f'loudnorm=measured_i={i}:measured_tp={tp}:measured_thresh={thresh}:measured_lra={lra}:i={target_lufs}:lra={target_lra}:tp={target_true_peak}',
-        '-f', 'flac',
+        '-b:a', '192k',
+        '-f', 'mp3',
         output_path,
     ])

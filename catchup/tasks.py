@@ -2,7 +2,7 @@ import tempfile
 from celery import shared_task
 from django.core.files import File
 
-from catchup import ffmpeg_utils
+from catchup import ffmpeg_utils, PROCESSED_FILE_EXTENSION
 from catchup.models import Episode
 
 
@@ -25,9 +25,9 @@ def process_upload(episode_pk: int, force: bool=False) -> bool:
     duration = round(float(input_info['format']['duration']))
     episode.duration_secs = duration
 
-    tmp = tempfile.NamedTemporaryFile(suffix='.flac')
+    tmp = tempfile.NamedTemporaryFile(suffix=f'.{PROCESSED_FILE_EXTENSION}')
     ffmpeg_utils.loudnorm(episode.original_file.path, tmp.name)
-    episode.processed_file = File(tmp, name=f'{episode.pk}.flac')
+    episode.processed_file = File(tmp, name=f'{episode.pk}.{PROCESSED_FILE_EXTENSION}')
     episode.status = Episode.Status.READY
 
     episode.save()

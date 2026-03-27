@@ -1,1 +1,2 @@
 PROCESSED_FILE_PATH_TEMPLATE = 'episodes/%Y/%m/%d/processed/'
+PROCESSED_FILE_EXTENSION = 'mp3'
