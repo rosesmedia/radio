@@ -28,6 +28,7 @@
             file
             (python313.withPackages devDependencies)
             uv
+            ffmpeg
           ];
         };
       }

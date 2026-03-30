@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from catchup import PROCESSED_FILE_PATH_TEMPLATE, utils
 from catchup.validators import validate_is_audio
 
 
@@ -16,6 +17,9 @@ class Episode(models.Model):
     publish_at = models.DateTimeField("publish at", default=timezone.now)
 
     original_file = models.FileField(upload_to="episodes/%Y/%m/%d/originals/", null=True, default=None, validators=[validate_is_audio])
+    processed_file = models.FileField(upload_to=PROCESSED_FILE_PATH_TEMPLATE, null=True, default=None)
+
+    duration_secs = models.PositiveIntegerField(null=True)
 
     status = models.CharField(
         max_length=1,
@@ -25,6 +29,10 @@ class Episode(models.Model):
 
     def __str__(self):
         return f'{self.name} ({Episode.Status(self.status).label})'
+
+    @property
+    def duration(self):
+        return utils.format_duration(self.duration_secs)
 
     @property
     def is_published(self):

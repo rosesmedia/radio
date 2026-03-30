@@ -5,8 +5,15 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "celery>=5.6.2",
     "django>=6.0.2",
     "psycopg>=3.3.2",
     "python-magic>=0.4.27",
     "social-auth-app-django>=5.7.0",
+]
+
+[dependency-groups]
+dev = [
+    "celery-types>=0.26.0",
+    "django-stubs>=6.0.1",
 ]

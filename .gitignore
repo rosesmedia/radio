@@ -4,3 +4,4 @@ __pycache__/
 # TODO: come up with a better way
 /roses_radio/settings.py
 /uploads
+/rabbitmq

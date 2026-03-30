@@ -22,5 +22,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('social_django.urls', namespace='social')),
+    path("episodes/", include('catchup.urls', namespace='catchup')),
     # path('livestreams/', include('livestreams.urls', namespace='livestreams')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
