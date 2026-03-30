@@ -1,0 +1,16 @@
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Install python dependencies
+        run: uv sync --color always --locked
+      - name: Start development services
+        run: docker compose up -d
+      - name: Run Django tests
+        run: uv run manage.py test
