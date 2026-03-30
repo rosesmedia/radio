@@ -33,8 +33,6 @@ def loudnorm(input_path: str, output_path: str, target_lufs: float=-12, target_l
             data += line
             reading_loudnorm = True
 
-    print(data)
-
     loudnorm_info = json.loads(data)
 
     i = loudnorm_info["input_i"]
