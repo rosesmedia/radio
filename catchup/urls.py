@@ -5,5 +5,5 @@ from . import views
 app_name = "catchup"
 
 urlpatterns = [
-    path("<str:slug>/", views.EpisodeView.as_view()),
+    path("<str:slug>/", views.EpisodeView.as_view(), name='detail'),
 ]

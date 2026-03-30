@@ -8,6 +8,8 @@
     <title>{{ episode.name }} | Roses Radio</title>
 </head>
 <body>
-    <audio controls src="{{ episode.processed_file.url }}"></audio>
+    {% if episode.processed_file %}
+        <audio controls src="{{ episode.processed_file.url }}"></audio>
+    {% endif %}
 </body>
 </html>
