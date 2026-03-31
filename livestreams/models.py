@@ -17,14 +17,14 @@ class Livestream(models.Model):
         default=Status.PENDING,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.name} ({Livestream.Status(self.status).label})'
 
 class LivestreamTag(models.Model):
     livestream = models.ForeignKey(Livestream, on_delete=models.CASCADE)
     tag = models.CharField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.tag
 
     class Meta:

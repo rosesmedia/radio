@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "celery>=5.6.2",
     "django>=6.0.2",
+    "django-stubs-ext>=6.0.1",
     "psycopg>=3.3.2",
     "python-magic>=0.4.27",
     "social-auth-app-django>=5.7.0",
@@ -15,5 +16,15 @@ dependencies = [
 [dependency-groups]
 dev = [
     "celery-types>=0.26.0",
-    "django-stubs>=6.0.1",
+    "django-stubs[compatible-mypy]>=6.0.1",
+    "mypy>=1.19.1",
 ]
+
+[tool.mypy]
+exclude_gitignore = true
+strict = true
+plugins = ["mypy_django_plugin.main"]
+
+
+[tool.django-stubs]
+django_settings_module = "roses_radio.settings"

@@ -6,7 +6,7 @@ from django.test import TestCase
 from catchup.models import Episode
 
 
-def create_episode(title: str, slug: str, days: int):
+def create_episode(title: str, slug: str, days: int) -> Episode:
     """
     Create an episode with the given `title`, `slug` and published the
     given number of `days` offset to now (negative for episodes published
@@ -17,7 +17,7 @@ def create_episode(title: str, slug: str, days: int):
 
 
 class EpisodeDetailViewTests(TestCase):
-    def test_future_episode(self):
+    def test_future_episode(self) -> None:
         """
         The detail view of an episode with a publish_at in the future
         returns a 404 not found.
@@ -27,7 +27,7 @@ class EpisodeDetailViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
-    def test_past_episode(self):
+    def test_past_episode(self) -> None:
         """
         The detail view of an episode with a publish_at in the past
         displays the episode's url.
