@@ -17,6 +17,6 @@ jobs:
       - name: Run mypy type checking
         run: uv run mypy .
       - name: Start development services
-        run: docker compose up -d
+        run: docker compose up --detach --wait
       - name: Run Django tests
         run: uv run manage.py test
