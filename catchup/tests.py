@@ -22,7 +22,9 @@ class EpisodeDetailViewTests(TestCase):
         The detail view of an episode with a publish_at in the future
         returns a 404 not found.
         """
-        unpublished_episode = create_episode(title="Unpublished episode", slug='unpublished-episode', days=5)
+        unpublished_episode = create_episode(
+            title="Unpublished episode", slug="unpublished-episode", days=5
+        )
         url = reverse("catchup:detail", args=(unpublished_episode.slug,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
@@ -32,8 +34,9 @@ class EpisodeDetailViewTests(TestCase):
         The detail view of an episode with a publish_at in the past
         displays the episode's url.
         """
-        published_episode = create_episode(title="Published episode", slug='published-episode', days=-5)
+        published_episode = create_episode(
+            title="Published episode", slug="published-episode", days=-5
+        )
         url = reverse("catchup:detail", args=(published_episode.slug,))
         response = self.client.get(url)
         self.assertContains(response, published_episode.name)
-

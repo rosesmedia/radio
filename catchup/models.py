@@ -16,8 +16,15 @@ class Episode(models.Model):
     uploaded_at = models.DateTimeField("uploaded at", auto_now_add=True)
     publish_at = models.DateTimeField("publish at", default=timezone.now)
 
-    original_file = models.FileField(upload_to="episodes/%Y/%m/%d/originals/", null=True, default=None, validators=[validate_is_audio])
-    processed_file = models.FileField(upload_to=PROCESSED_FILE_PATH_TEMPLATE, null=True, default=None)
+    original_file = models.FileField(
+        upload_to="episodes/%Y/%m/%d/originals/",
+        null=True,
+        default=None,
+        validators=[validate_is_audio],
+    )
+    processed_file = models.FileField(
+        upload_to=PROCESSED_FILE_PATH_TEMPLATE, null=True, default=None
+    )
 
     duration_secs = models.PositiveIntegerField(null=True)
 
@@ -28,7 +35,7 @@ class Episode(models.Model):
     )
 
     def __str__(self) -> str:
-        return f'{self.name} ({Episode.Status(self.status).label})'
+        return f"{self.name} ({Episode.Status(self.status).label})"
 
     @property
     def duration(self) -> str | None:
@@ -36,7 +43,10 @@ class Episode(models.Model):
 
     @property
     def is_published(self) -> bool:
-        return (self.status == Episode.Status.READY.name) and (self.publish_at <= timezone.now())
+        return (self.status == Episode.Status.READY.name) and (
+            self.publish_at <= timezone.now()
+        )
+
 
 class EpisodeTag(models.Model):
     episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
@@ -46,4 +56,4 @@ class EpisodeTag(models.Model):
         return self.tag
 
     class Meta:
-        unique_together = ('episode', 'tag')
+        unique_together = ("episode", "tag")

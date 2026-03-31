@@ -8,29 +8,57 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Episode',
+            name="Episode",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField()),
-                ('slug', models.SlugField()),
-                ('uploaded_at', models.DateTimeField(verbose_name='uploaded at')),
-                ('status', models.CharField(choices=[('P', 'Processing'), ('R', 'Ready')], default='P', max_length=1)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField()),
+                ("slug", models.SlugField()),
+                ("uploaded_at", models.DateTimeField(verbose_name="uploaded at")),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("P", "Processing"), ("R", "Ready")],
+                        default="P",
+                        max_length=1,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='EpisodeTag',
+            name="EpisodeTag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tag', models.CharField()),
-                ('episode', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='catchup.episode')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("tag", models.CharField()),
+                (
+                    "episode",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="catchup.episode",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('episode', 'tag')},
+                "unique_together": {("episode", "tag")},
             },
         ),
     ]
