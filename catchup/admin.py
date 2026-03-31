@@ -8,12 +8,14 @@ from catchup.models import EpisodeTag, Episode
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import ngettext_lazy as _n
 
+
 class EpisodeTagInline(admin.TabularInline[EpisodeTag, Episode]):
     model = EpisodeTag
     extra = 1
 
+
 class EpisodeAdmin(admin.ModelAdmin[Episode]):
-    prepopulated_fields = {'slug': ['name']}
+    prepopulated_fields = {"slug": ["name"]}
 
     fieldsets = [
         (None, {"fields": ["name", "slug", "publish_at"]}),
@@ -24,10 +26,12 @@ class EpisodeAdmin(admin.ModelAdmin[Episode]):
 
     inlines = [EpisodeTagInline]
 
-    actions = ['queue_upload_processing']
+    actions = ["queue_upload_processing"]
 
     @admin.action(description="Queue processing")
-    def queue_upload_processing(self, request: HttpRequest, queryset: QuerySet[Episode]) -> None:
+    def queue_upload_processing(
+        self, request: HttpRequest, queryset: QuerySet[Episode]
+    ) -> None:
         count = 0
         for episode in queryset:
             tasks.process_upload.delay(episode.pk, True)
@@ -38,8 +42,10 @@ class EpisodeAdmin(admin.ModelAdmin[Episode]):
                 "%d episode was queued for processing.",
                 "%d episodes were queued for processing.",
                 count,
-            ) % count,
-            messages.SUCCESS
+            )
+            % count,
+            messages.SUCCESS,
         )
+
 
 admin.site.register(Episode, EpisodeAdmin)

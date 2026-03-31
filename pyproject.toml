@@ -18,6 +18,7 @@ dev = [
     "celery-types>=0.26.0",
     "django-stubs[compatible-mypy]>=6.0.1",
     "mypy>=1.19.1",
+    "ruff>=0.15.8",
 ]
 
 [tool.mypy]

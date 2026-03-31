@@ -12,6 +12,8 @@ jobs:
         uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8
       - name: Install python dependencies
         run: uv sync --color always --locked
+      - name: Lint and check code style
+        run: uv run ruff check
       - name: Run mypy type checking
         run: uv run mypy .
       - name: Start development services

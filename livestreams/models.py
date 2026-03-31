@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class Livestream(models.Model):
     class Status(models.TextChoices):
         PENDING = "P", _("Pending")
@@ -18,7 +19,8 @@ class Livestream(models.Model):
     )
 
     def __str__(self) -> str:
-        return f'{self.name} ({Livestream.Status(self.status).label})'
+        return f"{self.name} ({Livestream.Status(self.status).label})"
+
 
 class LivestreamTag(models.Model):
     livestream = models.ForeignKey(Livestream, on_delete=models.CASCADE)
@@ -28,4 +30,4 @@ class LivestreamTag(models.Model):
         return self.tag
 
     class Meta:
-        unique_together = ('livestream', 'tag')
+        unique_together = ("livestream", "tag")
