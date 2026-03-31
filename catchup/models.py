@@ -27,22 +27,22 @@ class Episode(models.Model):
         default=Status.PROCESSING,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.name} ({Episode.Status(self.status).label})'
 
     @property
-    def duration(self):
-        return utils.format_duration(self.duration_secs)
+    def duration(self) -> str | None:
+        return utils.format_duration(self.duration_secs) if self.duration_secs else None
 
     @property
-    def is_published(self):
+    def is_published(self) -> bool:
         return (self.status == Episode.Status.READY.name) and (self.publish_at <= timezone.now())
 
 class EpisodeTag(models.Model):
     episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
     tag = models.CharField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.tag
 
     class Meta:

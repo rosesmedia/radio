@@ -1,13 +1,15 @@
+import typing
+
 import json
 
 import subprocess
 
 
-def ffprobe(path: str):
+def ffprobe(path: str) -> typing.Any:
     output = subprocess.check_output(['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_format', path])
     return json.loads(output.decode('utf-8'))
 
-def loudnorm(input_path: str, output_path: str, target_lufs: float=-12, target_lra: float=4, target_true_peak: float = -1):
+def loudnorm(input_path: str, output_path: str, target_lufs: float=-12, target_lra: float=4, target_true_peak: float = -1) -> None:
     """
     :param input_path: Path to the source audio file
     :param output_path: Path to the output normalised audio file. Must be a .flac file
