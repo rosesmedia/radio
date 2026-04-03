@@ -29,6 +29,8 @@
             (python313.withPackages devDependencies)
             uv
             ffmpeg
+            liquidsoap
+            socat
           ];
         };
       }
