@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: "postgres:17"
+    image: "docker.io/library/postgres:17"
     ports:
      - "5432:5432/tcp"
     environment:
@@ -16,7 +16,7 @@ services:
       retries: 5
   rabbitmq:
     hostname: rabbitmq-radio
-    image: "rabbitmq:4.2.4-management-alpine"
+    image: "docker.io/library/rabbitmq:4.2.4-management-alpine"
     ports:
       - "5672:5672/tcp"
       - "15672:15672/tcp"
@@ -27,7 +27,7 @@ services:
       - ./rabbitmq/data:/var/lib/rabbitmq
       - ./rabbitmq/log:/var/log/rabbitmq
   ome:
-    image: "airensoft/ovenmediaengine:v0.20.0"
+    image: "docker.io/airensoft/ovenmediaengine:v0.20.0"
     ports:
       - "8081:8081/tcp" # API
       - "9999:9999/udp" # SRT ingest
