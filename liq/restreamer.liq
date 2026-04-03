@@ -19,6 +19,7 @@ def get_env(key) =
 end
 
 stream_id = get_env("STREAM_ID")
+icecast_mount = get_env("ICECAST_MOUNT")
 
 settings.server.socket.path := "/tmp/restreamer-control-#{stream_id}.sock"
 
@@ -36,7 +37,10 @@ settings.server.socket.path := "/tmp/restreamer-control-#{stream_id}.sock"
 #   ))
 # end
 
-ob_in = metronome(12.0, frequency=1000.0)
+ob_in = stereo(input.http("#{icecast_server}/#{icecast_mount}", self_sync=false))
+beeps = metronome(12.0, frequency=1000.0)
+
+ob = fallback([ob_in, beeps], track_sensitive=false)
 
 selected_source = interactive.int("source", 4, description="Active source (1: live input, 2: pre-stream sustainer, 3: post-stream sustainer, 4: technical difficulties sustainer)")
 
@@ -46,7 +50,7 @@ techdiff = amplify(0.5, single("#{audio_base}/techdiff.wav"))
 
 stream = switch(
   [
-    ({selected_source() == 1}, ob_in),
+    ({selected_source() == 1}, ob),
     ({selected_source() == 2}, starting),
     ({selected_source() == 3}, ended),
     ({selected_source() == 4}, techdiff),
