@@ -1,7 +1,5 @@
 use miette::{Context, IntoDiagnostic};
-use stream_controller::{
-    client::ApiClient, jack::JackManager, routes, services::ServiceManager, AppState,
-};
+use stream_controller::{AppState, routes, services::ServiceManager};
 use tracing_subscriber::prelude::*;
 
 #[cfg(debug_assertions)]
@@ -18,22 +16,7 @@ async fn main() -> miette::Result<()> {
         ))
         .init();
 
-    let api_base = std::env::var("STREAM_API_BASE")
-        .expect("environment variable `STREAM_API_BASE` must be set");
-    let stream_api_token = std::env::var("STREAM_API_TOKEN").expect("`STREAM_API_TOKEN` environment variable to be set");
-    let client = ApiClient::new(api_base, stream_api_token);
-
     let service_manager = ServiceManager::new().await?;
-    let jack_manager = JackManager::new();
-
-    let ingest_points = client
-        .get_ingest_points()
-        .await
-        .into_diagnostic()
-        .with_context(|| "fetching initial ingest point list")?;
-    for ingest in ingest_points.ingest_points {
-        service_manager.start_ingest(&ingest.id).await?;
-    }
 
     let host = std::env::var("HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
 
@@ -44,10 +27,7 @@ async fn main() -> miette::Result<()> {
 
     let bind_addr = format!("{host}:{port}");
 
-    let app = routes::routes().with_state(AppState {
-        service_manager,
-        jack_manager,
-    });
+    let app = routes::routes().with_state(AppState { service_manager });
 
     let listener = tokio::net::TcpListener::bind(bind_addr)
         .await

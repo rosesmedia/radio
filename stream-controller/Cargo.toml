@@ -6,7 +6,6 @@ edition = "2024"
 [dependencies]
 axum = "0.8.8"
 miette = { version = "7.6.0", features = ["fancy"] }
-reqwest = { version = "0.13.2", default-features = false, features = ["json"] }
 serde = "1.0.228"
 systemd-zbus = "5.3.2" # dead library?
 tokio = { version = "1.51.0", features = ["full"] }

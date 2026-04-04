@@ -1,7 +1,6 @@
 use miette::{Context, IntoDiagnostic};
 use systemd_zbus::{ManagerProxy, Mode};
 
-const INGEST_UNIT: &str = "liq-ingest";
 const STREAMER_UNIT: &str = "liq-streamer";
 
 #[derive(Clone)]
@@ -18,7 +17,7 @@ impl ServiceManager {
         Ok(Self { connection })
     }
 
-    async fn get_proxy(&self) -> miette::Result<ManagerProxy> {
+    async fn get_proxy(&self) -> miette::Result<ManagerProxy<'_>> {
         ManagerProxy::new(&self.connection)
             .await
             .into_diagnostic()
@@ -58,30 +57,8 @@ impl ServiceManager {
         Ok(())
     }
 
-    fn ingest_unit_name(&self, id: &str) -> String {
-        format!("{INGEST_UNIT}@{id}.service")
-    }
-
     fn streamer_unit_name(&self, id: &str) -> String {
         format!("{STREAMER_UNIT}@{id}.service")
-    }
-
-    pub async fn start_ingest(&self, id: &str) -> miette::Result<()> {
-        self.start(&self.ingest_unit_name(id))
-            .await
-            .with_context(|| format!("starting ingest {id}"))
-    }
-
-    pub async fn restart_ingest(&self, id: &str) -> miette::Result<()> {
-        self.restart(&self.ingest_unit_name(id))
-            .await
-            .with_context(|| format!("restarting ingest {id}"))
-    }
-
-    pub async fn stop_ingest(&self, id: &str) -> miette::Result<()> {
-        self.stop(&self.ingest_unit_name(id))
-            .await
-            .with_context(|| format!("stopping ingest {id}"))
     }
 
     pub async fn start_streamer(&self, id: &str) -> miette::Result<()> {
