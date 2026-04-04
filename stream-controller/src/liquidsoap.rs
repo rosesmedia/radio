@@ -7,6 +7,14 @@ pub struct LiquidsoapClient {
     path: PathBuf,
 }
 
+#[derive(Debug, Clone, Copy)]
+pub enum Source {
+    Live,
+    PreStream,
+    PostStream,
+    TechnicalDifficulties,
+}
+
 impl LiquidsoapClient {
     const ACTION_SEND_COMMAND: &'static [u8] = b"\n";
 
@@ -32,6 +40,23 @@ impl LiquidsoapClient {
 
         // flush connection
         connection.flush().await
+    }
+
+    pub async fn set_source(&self, source: &Source) -> Result<(), std::io::Error> {
+        let command = format!("var.set source={}", source.id());
+        let mut connection = self.create_connection().await?;
+        self.send_command(&mut connection, command.as_bytes()).await
+    }
+}
+
+impl Source {
+    fn id(&self) -> u8 {
+        match self {
+            Source::Live => 1,
+            Source::PreStream => 2,
+            Source::PostStream => 3,
+            Source::TechnicalDifficulties => 4,
+        }
     }
 }
 
