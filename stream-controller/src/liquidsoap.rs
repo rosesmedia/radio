@@ -1,11 +1,15 @@
 use std::path::PathBuf;
 
+use miette::{Context, IntoDiagnostic};
 use tokio::{io::AsyncWriteExt as _, net::UnixStream};
 
 #[derive(Debug, Clone)]
 pub struct LiquidsoapClient {
     path: PathBuf,
 }
+
+#[derive(Debug)]
+pub struct LiquidsoapConnection(UnixStream);
 
 #[derive(Debug, Clone, Copy)]
 pub enum Source {
@@ -16,36 +20,46 @@ pub enum Source {
 }
 
 impl LiquidsoapClient {
+    pub fn new(stream: &str) -> Self {
+        todo!("this allows for path traversal");
+        Self {
+            path: format!("/tmp/restreamer-control-{stream}.sock").into(),
+        }
+    }
+
+    pub async fn create_connection(&self) -> miette::Result<LiquidsoapConnection> {
+        Ok(LiquidsoapConnection(
+            UnixStream::connect(&self.path)
+                .await
+                .into_diagnostic()
+                .with_context(|| "failed to connect to unix socket")?,
+        ))
+    }
+}
+
+impl LiquidsoapConnection {
     const ACTION_SEND_COMMAND: &'static [u8] = b"\n";
 
-    fn new<P: Into<PathBuf>>(path: P) -> Self {
-        Self { path: path.into() }
-    }
+    async fn send_command(&mut self, command: &[u8]) -> Result<(), std::io::Error> {
+        let Self(stream) = self;
 
-    async fn create_connection(&self) -> Result<UnixStream, std::io::Error> {
-        UnixStream::connect(&self.path).await
-    }
-
-    async fn send_command(
-        &self,
-        connection: &mut UnixStream,
-        command: &[u8],
-    ) -> Result<(), std::io::Error> {
         // make sure connection is writable
-        connection.writable().await?;
+        stream.writable().await?;
 
         // send command
-        connection.write(command).await?;
-        connection.write(Self::ACTION_SEND_COMMAND).await?;
+        stream.write(command).await?;
+        stream.write(Self::ACTION_SEND_COMMAND).await?;
 
         // flush connection
-        connection.flush().await
+        stream.flush().await
     }
 
-    pub async fn set_source(&self, source: &Source) -> Result<(), std::io::Error> {
+    pub async fn set_source(&mut self, source: &Source) -> miette::Result<()> {
         let command = format!("var.set source={}", source.id());
-        let mut connection = self.create_connection().await?;
-        self.send_command(&mut connection, command.as_bytes()).await
+        self.send_command(command.as_bytes())
+            .await
+            .into_diagnostic()
+            .with_context(|| "failed to write to unix socket")
     }
 }
 
@@ -58,8 +72,14 @@ impl Source {
             Source::TechnicalDifficulties => 4,
         }
     }
-}
 
-pub fn get_client(id: &str) -> LiquidsoapClient {
-    LiquidsoapClient::new(format!("/tmp/restreamer-control-{id}.sock"))
+    pub fn from_id(id: u8) -> Option<Self> {
+        match id {
+            1 => Some(Source::Live),
+            2 => Some(Source::PreStream),
+            3 => Some(Source::PostStream),
+            4 => Some(Source::TechnicalDifficulties),
+            _ => None,
+        }
+    }
 }
