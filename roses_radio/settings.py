@@ -37,6 +37,7 @@ ALLOWED_HOSTS: list[str] = []
 INSTALLED_APPS = [
     'livestreams.apps.LivestreamsConfig',
     'catchup.apps.CatchupConfig',
+    'roses2026.apps.Roses2026Config',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'social_django',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [

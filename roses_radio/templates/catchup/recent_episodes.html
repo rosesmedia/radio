@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Catchup{% endblock %}
+
+{% block content %}
+    <h1>You just missed:</h1>
+
+    {% if episodes %}
+        <ul>
+            {% for episode in episodes %}
+                <li>
+                    <a href="{% url 'catchup:detail' episode.slug %}">
+                        {{ episode.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>
+            No episodes are available right now, you're up to date!
+        </p>
+    {% endif %}
+{% endblock %}
