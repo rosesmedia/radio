@@ -1,11 +1,15 @@
+{% extends "base.html" %}
+
 {% block title %}{{ episode.name }}{% endblock %}
 
-<h1>{{ episode.name }}</h1>
+{% block content %}
+    <h1>{{ episode.name }}</h1>
 
-{% if episode.processed_file %}
-    <audio controls src="{{ episode.processed_file.url }}"></audio>
-{% else %}
-    <p>
-        This episode is still processing, check back in a couple of minutes!
-    </p>
-{% endif %}
+    {% if episode.processed_file %}
+        <audio controls src="{{ episode.processed_file.url }}"></audio>
+    {% else %}
+        <p>
+            This episode is still processing, check back in a couple of minutes!
+        </p>
+    {% endif %}
+{% endblock %}
