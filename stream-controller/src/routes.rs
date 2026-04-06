@@ -1,10 +1,11 @@
 use axum::{
-    Router,
+    Json, Router,
     extract::{Path, State},
     http::StatusCode,
     response::{IntoResponse, Response},
-    routing::post,
+    routing::{get, post},
 };
+use serde::{Deserialize, Serialize};
 
 use crate::{
     AppState, auth,
@@ -53,7 +54,7 @@ where
 async fn start_streamer(
     State(state): State<AppState>,
     Path(id): Path<String>,
-) -> Result<StatusCode, ApiError> {
+) -> Result<impl IntoResponse, ApiError> {
     state.service_manager.start_streamer(&id).await?;
     Ok(StatusCode::NO_CONTENT)
 }
@@ -62,34 +63,67 @@ async fn start_streamer(
 async fn stop_streamer(
     State(state): State<AppState>,
     Path(id): Path<String>,
-) -> Result<StatusCode, ApiError> {
+) -> Result<impl IntoResponse, ApiError> {
     state.service_manager.stop_streamer(&id).await?;
     Ok(StatusCode::NO_CONTENT)
 }
 
+#[derive(Debug, Clone, Deserialize)]
+struct SourceData {
+    source: Source,
+}
+
 #[tracing::instrument]
-async fn switch_stream_source(
-    Path((id, source)): Path<(String, u8)>,
-) -> Result<StatusCode, ApiError> {
-    let source = Source::from_id(source);
-    let Some(source) = source else {
-        return Err(ApiError::NotFound);
-    };
+async fn set_stream_source(
+    Path(id): Path<String>,
+    Json(data): Json<SourceData>,
+) -> Result<impl IntoResponse, ApiError> {
+    // todo: santise input
+    let client = LiquidsoapClient::new(&id);
+    let mut connection = client
+        .create_connection()
+        .await
+        .map_err(|_| ApiError::NotFound)?;
+    connection.set_source(&data.source).await?;
+
+    Ok(StatusCode::NO_CONTENT)
+}
+
+#[tracing::instrument]
+async fn get_stream_source(Path(id): Path<String>) -> Result<Json<impl Serialize>, ApiError> {
+    // todo: santise input
+    #[derive(Serialize)]
+    struct Response {
+        source: Source,
+    }
 
     let client = LiquidsoapClient::new(&id);
     let mut connection = client
         .create_connection()
         .await
         .map_err(|_| ApiError::NotFound)?;
-    connection.set_source(&source).await?;
 
-    Ok(StatusCode::NO_CONTENT)
+    let source = connection.get_source().await?;
+
+    Ok(Json(Response { source }))
+}
+
+#[tracing::instrument]
+async fn get_sources() -> Json<Vec<String>> {
+    Json(
+        Source::sources()
+            .iter()
+            .map(|source| source.identifier())
+            .collect(),
+    )
 }
 
 pub fn routes() -> Router<AppState> {
     Router::new()
         .route("/stream/{id}/start", post(start_streamer))
         .route("/stream/{id}/stop", post(stop_streamer))
-        .route("/stream/{id}/switch/{source}", post(switch_stream_source))
+        .route("/stream/{id}/source", post(set_stream_source))
+        .route("/stream/{id}/source", get(get_stream_source))
         .layer(axum::middleware::from_fn(auth::auth_middleware))
+        .route("/sources", get(get_sources))
 }
