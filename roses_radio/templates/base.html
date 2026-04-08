@@ -1,4 +1,5 @@
 {% load django_bootstrap5 %}
+{% load django_htmx %}
 
 <!doctype html>
 <html lang="en">
@@ -11,7 +12,7 @@
 
     {% bootstrap_css %}
 </head>
-<body>
+<body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}' hx-boost="true">
     <nav class="navbar navbar-expand-lg  bg-danger border-bottom border-body">
         <div class="container-fluid">
             <a href="/" class="navbar-brand">
@@ -44,5 +45,6 @@
     </main>
 
     {% bootstrap_javascript %}
+    {% htmx_script %}
 </body>
 </html>
