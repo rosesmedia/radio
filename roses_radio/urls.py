@@ -24,5 +24,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("social_django.urls", namespace="social")),
     path("episodes/", include("catchup.urls", namespace="catchup")),
+    path("", include("roses2026.urls", namespace="roses2026")),
     # path('livestreams/', include('livestreams.urls', namespace='livestreams')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

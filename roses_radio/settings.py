@@ -37,6 +37,7 @@ ALLOWED_HOSTS: list[str] = []
 INSTALLED_APPS = [
     'livestreams.apps.LivestreamsConfig',
     'catchup.apps.CatchupConfig',
+    'roses2026.apps.Roses2026Config',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'social_django',
+    'django_bootstrap5',
+    'django_htmx',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = 'roses_radio.urls'
