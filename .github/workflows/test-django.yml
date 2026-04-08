@@ -1,3 +1,5 @@
+name: Test (django)
+
 on:
   push:
   pull_request:
