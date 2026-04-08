@@ -35,17 +35,6 @@ impl ServiceManager {
         Ok(())
     }
 
-    async fn restart(&self, service: &str) -> miette::Result<()> {
-        tracing::info!(service, "restarting unit");
-        self.get_proxy()
-            .await?
-            .restart_unit(service, Mode::Replace)
-            .await
-            .into_diagnostic()
-            .with_context(|| format!("restarting unit {service}"))?;
-        Ok(())
-    }
-
     async fn stop(&self, service: &str) -> miette::Result<()> {
         tracing::info!(service, "stopping unit");
         self.get_proxy()
