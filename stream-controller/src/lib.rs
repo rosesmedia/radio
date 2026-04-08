@@ -2,6 +2,7 @@ use services::ServiceManager;
 
 pub mod auth;
 pub mod liquidsoap;
+pub mod response;
 pub mod routes;
 pub mod services;
 

@@ -43,13 +43,16 @@ impl LiquidsoapClient {
 impl LiquidsoapConnection {
     const ACTION_SEND_COMMAND: &'static [u8] = b"\n";
 
-    async fn send_and_forget_command(&mut self, command: &[u8]) -> Result<(), std::io::Error> {
+    async fn send_and_forget_command(
+        &mut self,
+        command: impl AsRef<[u8]>,
+    ) -> Result<(), std::io::Error> {
         let Self(stream) = self;
-        stream.write_all(command).await?;
+        stream.write_all(command.as_ref()).await?;
         stream.write_all(Self::ACTION_SEND_COMMAND).await
     }
 
-    async fn send_command(&mut self, command: &[u8]) -> Result<String, std::io::Error> {
+    async fn send_command(&mut self, command: impl AsRef<[u8]>) -> Result<String, std::io::Error> {
         // send command
         self.send_and_forget_command(command).await?;
 
@@ -82,7 +85,7 @@ impl LiquidsoapConnection {
         tracing::info!(?source, "setting source");
 
         let command = format!("var.set source={}", source.id());
-        self.send_and_forget_command(command.as_bytes())
+        self.send_and_forget_command(command)
             .await
             .into_diagnostic()
             .with_context(|| "failed to write to unix socket")
@@ -93,7 +96,7 @@ impl LiquidsoapConnection {
 
         let command = "var.get source";
         let source = self
-            .send_command(command.as_bytes())
+            .send_command(command)
             .await
             .into_diagnostic()
             .with_context(|| "failed to communicate with unix socket")?;

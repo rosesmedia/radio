@@ -1,60 +1,32 @@
+use std::sync::LazyLock;
+
 use axum::{
     Json, Router,
     extract::{Path, State},
     http::StatusCode,
-    response::{IntoResponse, Response},
+    response::IntoResponse,
     routing::{get, post},
 };
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 
 use crate::{
     AppState, auth,
     liquidsoap::{LiquidsoapClient, Source},
+    response::ApiError,
 };
 
-enum ApiError {
-    NotFound,
-    Internal,
-}
-
-impl ApiError {
-    fn status_code(&self) -> StatusCode {
-        match self {
-            Self::NotFound => StatusCode::NOT_FOUND,
-            Self::Internal => StatusCode::INTERNAL_SERVER_ERROR,
-        }
-    }
-
-    fn message(&self) -> String {
-        match self {
-            Self::NotFound => "not found",
-            Self::Internal => "internal server error",
-        }
-        .to_string()
-    }
-}
-
-impl IntoResponse for ApiError {
-    fn into_response(self) -> Response {
-        (self.status_code(), self.message()).into_response()
-    }
-}
-
-impl<E> From<E> for ApiError
-where
-    E: Into<miette::Report>,
-{
-    fn from(err: E) -> Self {
-        tracing::error!("{:?}", err.into());
-        ApiError::Internal
-    }
-}
+const STREAM_NAME_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[a-z0-9_.-]+$").unwrap());
 
 #[tracing::instrument(skip(state))]
 async fn start_streamer(
     State(state): State<AppState>,
     Path(id): Path<String>,
 ) -> Result<impl IntoResponse, ApiError> {
+    if !STREAM_NAME_REGEX.is_match(&id) {
+        return Err(ApiError::UnprocessableEntity);
+    }
+
     state.service_manager.start_streamer(&id).await?;
     Ok(StatusCode::NO_CONTENT)
 }
@@ -64,6 +36,10 @@ async fn stop_streamer(
     State(state): State<AppState>,
     Path(id): Path<String>,
 ) -> Result<impl IntoResponse, ApiError> {
+    if !STREAM_NAME_REGEX.is_match(&id) {
+        return Err(ApiError::UnprocessableEntity);
+    }
+
     state.service_manager.stop_streamer(&id).await?;
     Ok(StatusCode::NO_CONTENT)
 }
@@ -78,7 +54,10 @@ async fn set_stream_source(
     Path(id): Path<String>,
     Json(data): Json<SourceData>,
 ) -> Result<impl IntoResponse, ApiError> {
-    // todo: santise input
+    if !STREAM_NAME_REGEX.is_match(&id) {
+        return Err(ApiError::UnprocessableEntity);
+    }
+
     let client = LiquidsoapClient::new(&id);
     let mut connection = client
         .create_connection()
@@ -91,10 +70,13 @@ async fn set_stream_source(
 
 #[tracing::instrument]
 async fn get_stream_source(Path(id): Path<String>) -> Result<Json<impl Serialize>, ApiError> {
-    // todo: santise input
     #[derive(Serialize)]
     struct Response {
         source: Source,
+    }
+
+    if !STREAM_NAME_REGEX.is_match(&id) {
+        return Err(ApiError::UnprocessableEntity);
     }
 
     let client = LiquidsoapClient::new(&id);
