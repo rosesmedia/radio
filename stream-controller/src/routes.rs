@@ -16,7 +16,7 @@ use crate::{
     response::ApiError,
 };
 
-const STREAM_NAME_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[a-z0-9_.-]+$").unwrap());
+static STREAM_NAME_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[a-z0-9_.-]+$").unwrap());
 
 #[tracing::instrument(skip(state))]
 async fn start_streamer(
