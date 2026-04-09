@@ -4,6 +4,7 @@ __pycache__/
 # TODO: come up with a better way
 /roses_radio/settings.py
 /uploads
+/recordings
 /rabbitmq
 /ome_log
 liq/restreamer.local.conf

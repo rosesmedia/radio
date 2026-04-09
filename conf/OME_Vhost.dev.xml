@@ -49,6 +49,16 @@
                 </LLHLS>
 
                 <SRT />
+
+                <FILE>
+                    <RootPath>/recordings</RootPath>
+                    <FilePath>/${VirtualHost}/${Application}/${Stream}/${StartTime:YYYYMMDDhhmmss}_${EndTime:YYYYMMDDhhmmss}.ts</FilePath>
+                    <InfoPath>/${VirtualHost}/${Application}/${Stream}.xml</InfoPath>
+                    <StreamMap>
+                        <Enable>true</Enable>
+                        <Path>./Record.xml</Path>
+                    </StreamMap>
+                </FILE>
             </Publishers>
         </Application>
     </Applications>

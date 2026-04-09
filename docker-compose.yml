@@ -35,5 +35,7 @@ services:
       - "3333:3333/tcp" # HLS
     volumes:
       - "./conf/OME_Server.dev.xml:/opt/ovenmediaengine/bin/origin_conf/Server.xml:ro"
+      - "./conf/OME_Record.dev.xml:/opt/ovenmediaengine/bin/origin_conf/Record.xml:ro"
       - "./conf/OME_Vhost.dev.xml:/opt/ovenmediaengine/bin/origin_conf/vhosts/dev.xml:ro"
       - "./ome_log:/var/log/ovenmediaengine"
+      - "./recordings:/recordings"
