@@ -7,4 +7,5 @@ app_name = "catchup"
 urlpatterns = [
     path("", views.RecentEpisodesView.as_view(), name="index"),
     path("<str:slug>/", views.EpisodeView.as_view(), name="detail"),
+    path("<str:slug>/edit", views.UpdateEpisodeView.as_view(), name="update"),
 ]

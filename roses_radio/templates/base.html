@@ -1,5 +1,6 @@
 {% load django_bootstrap5 %}
 {% load django_htmx %}
+{% load static %}
 
 <!doctype html>
 <html lang="en">
@@ -11,6 +12,7 @@
     <title>{% block title %}Home{% endblock %} - Roses Radio 2026</title>
 
     {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons-1.13.1/bootstrap-icons.min.css' %}">
 </head>
 <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}' hx-boost="true">
     <nav class="navbar navbar-expand-lg  bg-danger border-bottom border-body">

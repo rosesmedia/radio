@@ -18,3 +18,8 @@ class EpisodeView(generic.DetailView[Episode]):
 
     def get_queryset(self) -> QuerySet[Episode]:
         return Episode.objects.filter(publish_at__lte=timezone.now())
+
+class UpdateEpisodeView(generic.UpdateView):
+    model = Episode
+    template_name = "catchup/update_episode.html"
+    fields = ["name", "publish_at"]
