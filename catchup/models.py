@@ -48,7 +48,7 @@ class Episode(models.Model):
             self.publish_at <= timezone.now()
         )
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse("catchup:detail", kwargs={"slug": self.slug})
 
 

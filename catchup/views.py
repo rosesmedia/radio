@@ -2,16 +2,16 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import QuerySet
-from django.forms import inlineformset_factory
 from django.forms.models import ModelForm
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
 from catchup import tasks
-from catchup.forms import EpisodeForm
-from catchup.models import Episode, EpisodeTag
+from catchup.forms import EpisodeForm, CreateEpisodeTagsFormset, UpdateEpisodeTagsFormset
+from catchup.models import Episode
 
 
 class RecentEpisodesView(generic.ListView[Episode]):
@@ -28,10 +28,9 @@ class EpisodeView(generic.DetailView[Episode]):
     def get_queryset(self) -> QuerySet[Episode]:
         return Episode.objects.filter(publish_at__lte=timezone.now())
 
-def create_episode(request):
-    InlineFormSet = inlineformset_factory(Episode, EpisodeTag, fields=('tag',), extra=3)
+def create_episode(request: HttpRequest) -> HttpResponse:
     form = EpisodeForm(request.POST or None, request.FILES or None)
-    formset = InlineFormSet(request.POST or None, instance=Episode())
+    formset = CreateEpisodeTagsFormset(request.POST or None, instance=Episode())
     if form.is_valid() and formset.is_valid():
         episode = form.save()
         formset.instance = episode
@@ -52,10 +51,9 @@ class UpdateEpisodeView(PermissionRequiredMixin, generic.UpdateView[Episode, Mod
     raise_exception = True
 
 @permission_required("catchup.change_episode", raise_exception=True)
-def update_episode_tags(request, slug):
-    InlineFormSet = inlineformset_factory(Episode, EpisodeTag, fields=('tag',), extra=1)
+def update_episode_tags(request: HttpRequest, slug: str) -> HttpResponse:
     episode = get_object_or_404(Episode, slug=slug)
-    formset = InlineFormSet(request.POST or None, instance=episode, )
+    formset = UpdateEpisodeTagsFormset(request.POST or None, instance=episode, )
     if formset.is_valid():
         formset.instance = episode
         formset.save()
