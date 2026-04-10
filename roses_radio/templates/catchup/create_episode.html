@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Upload episode{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h1>Upload episode</h1>
+
+            <form method="post" class="form" hx-disabled-elt="find button" hx-boost="false" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% bootstrap_form form %}
+                {% bootstrap_formset formset %}
+
+                {% bootstrap_button button_type="submit" content="Upload" %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

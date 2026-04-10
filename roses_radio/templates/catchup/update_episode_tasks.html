@@ -2,7 +2,7 @@
 
 {% load django_bootstrap5 %}
 
-{% block title %}Edit {{ episode.name }}{% endblock %}
+{% block title %}Edit {{ episode.name }} tags{% endblock %}
 
 {% block content %}
     <div class="card">
@@ -12,13 +12,13 @@
                     <a class="nav-link" href="{% url 'catchup:detail' episode.slug %}">View</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="true">
+                    <a class="nav-link" href="{% url 'catchup:update' episode.slug %}">
                         <i class="bi bi-pen"></i>
                         Edit
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'catchup:update_tags' episode.slug %}">
+                    <a class="nav-link active" aria-current="true">
                         <i class="bi bi-tags"></i>
                         Tags
                     </a>
@@ -26,12 +26,12 @@
             </ul>
         </div>
         <div class="card-body">
-            <h1>Edit {{ episode.name }}</h1>
+            <h1>Edit tags on {{ episode.name }}</h1>
 
             <form method="post" class="form" hx-disabled-elt="find button">
                 {% csrf_token %}
 
-                {% bootstrap_form form %}
+                {% bootstrap_formset formset layout='horizontal' %}
 
                 {% bootstrap_button button_type="submit" content="Save" %}
             </form>

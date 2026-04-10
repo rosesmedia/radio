@@ -5,6 +5,12 @@
 {% block content %}
     <h1>You just missed:</h1>
 
+    {% if perms.catchup.add_episode %}
+        <a class="btn btn-success" role="button" href="{% url 'catchup:create' %}">
+            Upload episode
+        </a>
+    {% endif %}
+
     {% if episodes %}
         <ul>
             {% for episode in episodes %}
