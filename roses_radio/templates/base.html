@@ -1,5 +1,6 @@
 {% load django_bootstrap5 %}
 {% load django_htmx %}
+{% load static %}
 
 <!doctype html>
 <html lang="en">
@@ -11,6 +12,7 @@
     <title>{% block title %}Home{% endblock %} - Roses Radio 2026</title>
 
     {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons-1.13.1/bootstrap-icons.min.css' %}">
 </head>
 <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}' hx-boost="true">
     <nav class="navbar navbar-expand-lg  bg-danger border-bottom border-body">
@@ -32,14 +34,36 @@
                     <li class="nav-item">
                         <a href="{% url 'catchup:index' %}" class="nav-link">Catch up</a>
                     </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Logged in as {{ user.first_name }}
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form method="POST" action="{% url 'auth_logout' %}">
+                                    <button type="submit" class="dropdown-item">
+                                        Sign out
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                        </li>
+                    {% endif %}
                 </ul>
+
+                {% if not user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'social:begin' 'oidc' %}" hx-boost="false">
+                        Log in
+                    </a>
+                {% endif %}
             </div>
         </div>
     </nav>
 
-    {% bootstrap_messages %}
-
     <main class="container mt-4">
+        {% bootstrap_messages %}
+
         {% block content %}
         {% endblock %}
     </main>

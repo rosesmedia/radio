@@ -3,13 +3,45 @@
 {% block title %}{{ episode.name }}{% endblock %}
 
 {% block content %}
-    <h1>{{ episode.name }}</h1>
+    <div class="card">
+        {% if perms.catchup.change_episode %}
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="true">View</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'catchup:update' episode.slug %}">
+                        <i class="bi bi-pen"></i>
+                        Edit
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'catchup:update_tags' episode.slug %}">
+                        <i class="bi bi-tags"></i>
+                        Tags
+                    </a>
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+        <div class="card-body">
+            <h1>{{ episode.name }}</h1>
 
-    {% if episode.processed_file %}
-        <audio controls src="{{ episode.processed_file.url }}"></audio>
-    {% else %}
-        <p>
-            This episode is still processing, check back in a couple of minutes!
-        </p>
-    {% endif %}
+            {% if episode.processed_file %}
+            <audio controls src="{{ episode.processed_file.url }}"></audio>
+            {% else %}
+            <p>
+                This episode is still processing, check back in a couple of minutes!
+            </p>
+            {% endif %}
+
+            <p>
+                Tags:
+                {% for tag in episode.episodetag_set.all %}
+                    <span class="badge text-bg-secondary">{{ tag.tag }}</span>
+                {% endfor %}
+            </p>
+        </div>
+    </div>
 {% endblock %}

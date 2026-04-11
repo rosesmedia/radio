@@ -9,6 +9,7 @@ ALLOWED_AUDIO_TYPES = [
     "audio/ogg",
     "audio/wav",
     "audio/webm",
+    "audio/x-wav",
 ]
 
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -46,6 +47,9 @@ class Episode(models.Model):
         return (self.status == Episode.Status.READY.name) and (
             self.publish_at <= timezone.now()
         )
+
+    def get_absolute_url(self) -> str:
+        return reverse("catchup:detail", kwargs={"slug": self.slug})
 
 
 class EpisodeTag(models.Model):
