@@ -10,7 +10,7 @@ class LivestreamTagInline(admin.TabularInline[LivestreamTag, Livestream]):
 
 class LivestreamAdmin(admin.ModelAdmin[Livestream]):
     prepopulated_fields = {"slug": ["name"]}
-
+    fields = ["name", "slug", "scheduled_start"]
     inlines = [LivestreamTagInline]
 
 

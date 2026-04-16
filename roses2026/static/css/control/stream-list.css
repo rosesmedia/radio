@@ -1,0 +1,19 @@
+.stream-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+    max-height: calc(100vh - 160px);
+}
+
+.stream-list li {
+    border-bottom: 4px solid white;
+    padding: .3em 1em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.stream-name {
+    flex: 1;
+}

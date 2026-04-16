@@ -1,0 +1,16 @@
+{% extends "livestreams/control/base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <ul class="stream-list">
+        {% for stream in livestreams %}
+            <li>
+                <span class="stream-name">{{ stream.name }}</span>
+                <a class="btn" href="{% url 'livestreams:control_stream' stream.slug %}" hx-boost="true">
+                    Select &rarr;
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
