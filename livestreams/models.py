@@ -41,12 +41,14 @@ class Livestream(models.Model):
 
     @property
     def started_today(self) -> bool:
-        if not self.started_at: return False
+        if not self.started_at:
+            return False
         return self.started_at.date() == now().date()
 
     @property
     def ended_today(self) -> bool:
-        if not self.ended_at: return False
+        if not self.ended_at:
+            return False
         return self.ended_at.date() == now().date()
 
     def __str__(self) -> str:
