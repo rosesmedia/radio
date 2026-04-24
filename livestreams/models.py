@@ -7,7 +7,7 @@ class IngestPoint(models.Model):
     name = models.CharField()
     icecast_url = models.URLField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 class Livestream(models.Model):
@@ -41,10 +41,12 @@ class Livestream(models.Model):
 
     @property
     def started_today(self) -> bool:
+        if not self.started_at: return False
         return self.started_at.date() == now().date()
 
     @property
     def ended_today(self) -> bool:
+        if not self.ended_at: return False
         return self.ended_at.date() == now().date()
 
     def __str__(self) -> str:
