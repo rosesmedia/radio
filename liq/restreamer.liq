@@ -19,7 +19,7 @@ def get_env(key) =
 end
 
 stream_id = get_env("STREAM_ID")
-icecast_mount = get_env("ICECAST_MOUNT")
+ingest_url = get_env("INGEST_URL")
 
 settings.server.socket.path := "/tmp/restreamer-control-#{stream_id}.sock"
 
@@ -37,7 +37,7 @@ settings.server.socket.path := "/tmp/restreamer-control-#{stream_id}.sock"
 #   ))
 # end
 
-ob_in = stereo(input.http("#{icecast_server}/#{icecast_mount}", self_sync=false))
+ob_in = stereo(input.http(ingest_url, self_sync=false))
 beeps = metronome(12.0, frequency=1000.0)
 
 ob = fallback([ob_in, beeps], track_sensitive=false)
@@ -76,7 +76,7 @@ output.srt(
   host=srt_host,
   port=srt_port,
   mode="caller",
-  streamid="default/roses/#{stream_id}",
+  streamid="#{srt_streamid_prefix}/#{stream_id}",
   aac_high,
   stream
 )

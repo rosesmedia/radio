@@ -3,6 +3,13 @@ from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
 
+class IngestPoint(models.Model):
+    name = models.CharField()
+    icecast_url = models.URLField()
+
+    def __str__(self):
+        return self.name
+
 class Livestream(models.Model):
     STATUSES = {
         "P": _("Pending"),
@@ -13,6 +20,8 @@ class Livestream(models.Model):
     name = models.CharField()
     slug = models.SlugField()
     scheduled_start = models.DateTimeField("scheduled start")
+
+    ingest_point = models.ForeignKey(IngestPoint, on_delete=models.SET_NULL, null=True, default=None, blank=True)
 
     started_at = models.DateTimeField("stream started at", null=True, default=None)
     ended_at = models.DateTimeField("stream ended at", null=True, default=None)
@@ -29,6 +38,14 @@ class Livestream(models.Model):
     @property
     def starts_today(self) -> bool:
         return self.scheduled_start.date() == now().date()
+
+    @property
+    def started_today(self) -> bool:
+        return self.started_at.date() == now().date()
+
+    @property
+    def ended_today(self) -> bool:
+        return self.ended_at.date() == now().date()
 
     def __str__(self) -> str:
         return f"{self.name} ({Livestream.STATUSES[self.status]})"

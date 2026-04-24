@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from livestreams.models import Livestream, LivestreamTag
+from livestreams.models import Livestream, LivestreamTag, IngestPoint
 
 
 class LivestreamTagInline(admin.TabularInline[LivestreamTag, Livestream]):
@@ -10,8 +10,8 @@ class LivestreamTagInline(admin.TabularInline[LivestreamTag, Livestream]):
 
 class LivestreamAdmin(admin.ModelAdmin[Livestream]):
     prepopulated_fields = {"slug": ["name"]}
-    fields = ["name", "slug", "scheduled_start"]
+    fields = ["name", "slug", "scheduled_start", "ingest_point"]
     inlines = [LivestreamTagInline]
 
-
 admin.site.register(Livestream, LivestreamAdmin)
+admin.site.register(IngestPoint)

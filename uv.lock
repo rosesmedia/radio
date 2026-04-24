@@ -593,6 +593,7 @@ dependencies = [
     { name = "django-stubs-ext" },
     { name = "psycopg" },
     { name = "python-magic" },
+    { name = "requests" },
     { name = "social-auth-app-django" },
 ]
 
@@ -613,6 +614,7 @@ requires-dist = [
     { name = "django-stubs-ext", specifier = ">=6.0.1" },
     { name = "psycopg", specifier = ">=3.3.2" },
     { name = "python-magic", specifier = ">=0.4.27" },
+    { name = "requests", specifier = ">=2.33.1" },
     { name = "social-auth-app-django", specifier = ">=5.7.0" },
 ]
 

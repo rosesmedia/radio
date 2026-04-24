@@ -156,3 +156,6 @@ MEDIA_URL = 'uploads/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = 'amqp://radio:radio@localhost//'
+
+STREAM_CONTROLLER_API = 'http://localhost:1350'
+STREAM_CONTROLLER_API_SECRET = 'changemeplease'

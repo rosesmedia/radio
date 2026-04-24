@@ -12,6 +12,7 @@ dependencies = [
     "django-stubs-ext>=6.0.1",
     "psycopg>=3.3.2",
     "python-magic>=0.4.27",
+    "requests>=2.33.1",
     "social-auth-app-django>=5.7.0",
 ]
 
