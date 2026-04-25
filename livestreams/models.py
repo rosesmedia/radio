@@ -54,6 +54,11 @@ class Livestream(models.Model):
     def __str__(self) -> str:
         return f"{self.name} ({Livestream.STATUSES[self.status]})"
 
+    class Meta:
+        permissions = [
+            ("control", "Can control a live stream (start, stop, change source, etc)")
+        ]
+
 class LivestreamTag(models.Model):
     livestream = models.ForeignKey(Livestream, on_delete=models.CASCADE)
     tag = models.CharField()
