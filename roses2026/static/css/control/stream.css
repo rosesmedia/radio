@@ -1,3 +1,23 @@
 .stream-controls {
     padding: .25em;
 }
+
+.source-selector {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+
+    margin: 24px 0;
+}
+
+.btn-source {
+    width: 256px;
+    height: 256px;
+    display: grid;
+    place-content: center;
+}
+
+.btn-selected {
+    outline: green 16px solid;
+    border: green 16px solid;
+}

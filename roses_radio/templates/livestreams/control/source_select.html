@@ -1,0 +1,18 @@
+{% for source in sources %}
+    {% if source.is_live %}
+        <div class="btn btn-source btn-red">
+            {{ source.name }}
+        </div>
+    {% elif source.is_selected %}
+        <form method="post" action="{% url 'livestreams:source' livestream.slug %}" class="form" hx-disabled-elt="find button" hx-boost="false" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-source btn-selected" name="source" value="{{ source.id }}">
+                {{ source.name }}
+            </button>
+        </form>
+    {% else %}
+        <a class="btn btn-source" href="{% url 'livestreams:control_stream' slug=livestream.slug %}?selected={{ source.id | urlencode }}">
+            {{ source.name }}
+        </a>
+    {% endif %}
+{% endfor %}

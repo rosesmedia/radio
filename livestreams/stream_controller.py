@@ -6,6 +6,13 @@ _STREAM_CONTROLLER_HEADERS = {
     'Authorization': 'Bearer ' + settings.STREAM_CONTROLLER_API_SECRET,
 }
 
+SOURCES = {
+    'SRT': 'pre_stream',
+    'PGM': 'live',
+    'END': 'post_stream',
+    'TDF': 'technical_difficulties',
+}
+
 def _stream_controller_post(path: str, data: Optional[Any]=None) -> None:
     if data:
         resp = requests.post(settings.STREAM_CONTROLLER_API + path, json=data, headers=_STREAM_CONTROLLER_HEADERS)

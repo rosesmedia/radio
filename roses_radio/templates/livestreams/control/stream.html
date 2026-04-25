@@ -9,50 +9,23 @@
 
 {% block content %}
     <div class="stream-controls">
-        {% if livestream.status == 'P' %}
-            <div>
-                Source: TODO
-            </div>
-            <div>
-                Scheduled start:
-                {% if livestream.starts_today %}
-                    {{ livestream.scheduled_start.time }}
-                {% else %}
-                    {{ livestream.scheduled_start }}
-                {% endif %}
-            </div>
-            <div>
-                <form method="post" action="{% url 'livestreams:start_stream' livestream.slug %}" class="form" hx-disabled-elt="find button" hx-boost="false" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-green">
-                        Start stream
-                    </button>
-                </form>
-            </div>
-        {% elif livestream.status == 'L' %}
-            <div>
-                Source: TODO
-            </div>
-            <div>
-                <form method="post" action="{% url 'livestreams:stop_stream' livestream.slug %}" class="form" hx-disabled-elt="find button" hx-boost="false" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-red">
-                        Stop stream
-                    </button>
-                </form>
-            </div>
-        {% elif livestream.status == 'E' %}
-            <div>
-                Source: TODO
-            </div>
-            <div>
-                Scheduled start:
-                {% if livestream.starts_today %}
-                    {{ livestream.scheduled_start.time }}
-                {% else %}
-                    {{ livestream.scheduled_start }}
-                {% endif %}
-            </div>
+        <div>
+            Ingest:
+            {% if livestream.ingest_point %}
+                {{ livestream.ingest_point.name }}
+            {% else %}
+                [unset]
+            {% endif %}
+        </div>
+        <div>
+            Scheduled start:
+            {% if livestream.starts_today %}
+                {{ livestream.scheduled_start.time }}
+            {% else %}
+                {{ livestream.scheduled_start }}
+            {% endif %}
+        </div>
+        {% if livestream.started_at %}
             <div>
                 Started at:
                 {% if livestream.started_today %}
@@ -61,6 +34,8 @@
                     {{ livestream.started_at }}
                 {% endif %}
             </div>
+        {% endif %}
+        {% if livestream.ended_at %}
             <div>
                 Ended at:
                 {% if livestream.ended_today %}
@@ -69,8 +44,30 @@
                     {{ livestream.ended_at }}
                 {% endif %}
             </div>
-        {% else %}
-            Status: {{ livestream.status }}
+        {% endif %}
+        {% if livestream.status == 'P' %}
+            <div>
+                <form method="post" action="{% url 'livestreams:start_stream' livestream.slug %}" class="form" hx-disabled-elt="find button" hx-boost="false" enctype="multipart/form-data" hx-confirm="Are you sure you want to start this stream?">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-green">
+                        Start stream
+                    </button>
+                </form>
+            </div>
+        {% elif livestream.status == 'L' %}
+            {% if selected %}
+                <div class="source-selector" hx-get="{% url 'livestreams:source' livestream.slug %}?selected={{ selected | urlencode }}" hx-trigger="load, every 5s"></div>
+            {% else %}
+                <div class="source-selector" hx-get="{% url 'livestreams:source' livestream.slug %}" hx-trigger="load, every 5s"></div>
+            {% endif %}
+            <div>
+                <form method="post" action="{% url 'livestreams:stop_stream' livestream.slug %}" class="form" hx-disabled-elt="find button" hx-boost="false" enctype="multipart/form-data" hx-confirm="Are you sure you want to end this stream?">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-red">
+                        Stop stream
+                    </button>
+                </form>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
