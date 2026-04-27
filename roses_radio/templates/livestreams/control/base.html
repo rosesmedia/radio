@@ -1,0 +1,29 @@
+{% load django_htmx %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Roses TX Control</title>
+    <link rel="stylesheet" href="{% static 'fonts/fonts.css' %}">
+    <!-- htmx doesn't support swapping css on hx-boost'd links, so we include them all here -->
+    <link rel="stylesheet" href="{% static 'css/control/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/control/stream-list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/control/stream.css' %}">
+</head>
+<body>
+    <div class="topbar">
+        {% block topbar %}Radio TX Control{% endblock %}
+    </div>
+
+    <main>
+        {% block content %}lol someone forgot to put content here{% endblock %}
+    </main>
+
+    {% htmx_script %}
+</body>
+</html>

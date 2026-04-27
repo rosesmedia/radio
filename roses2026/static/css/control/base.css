@@ -1,0 +1,42 @@
+body {
+    box-sizing: border-box;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-size: 72px;
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    max-height: 100vh;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+.topbar {
+    border-bottom: 8px solid white;
+    height: 160px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 .5em;
+    gap: .5em;
+}
+
+.btn {
+    background-color: grey;
+    color: white;
+    outline: none;
+    border: none;
+    padding: .1em .25em;
+    text-decoration: none;
+    font-size: inherit;
+}
+
+.btn-green {
+    background-color: green;
+}
+
+.btn-red {
+    background-color: red;
+}

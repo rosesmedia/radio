@@ -24,6 +24,7 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("social_django.urls", namespace="social")),
+    path("live/", include("livestreams.urls", namespace="livestreams")),
     path("episodes/", include("catchup.urls", namespace="catchup")),
     path("", include("roses2026.urls", namespace="roses2026")),
     path("auth/logout", auth_views.LogoutView.as_view(), name="auth_logout"),
