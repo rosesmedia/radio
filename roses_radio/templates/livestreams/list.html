@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Live steams{% endblock %}
+
+{% block content %}
+    <h1>Catch all the action:</h1>
+
+    {% if streams %}
+        <ul>
+            {% for stream in streams %}
+                <li>
+                    <a href="{% url 'livestreams:detail' stream.slug %}">
+                        {{ stream.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>
+            No streams are available right now, you're up to date!
+        </p>
+    {% endif %}
+{% endblock %}
