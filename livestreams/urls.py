@@ -1,10 +1,12 @@
 from django.urls import path
 
-from livestreams import control_views, api_views
+from livestreams import control_views, api_views, views
 
 app_name = "livestreams"
 
 urlpatterns = [
+    path("", views.LiveStreamsView.as_view(), name="index"),
+    path("<str:slug>/", views.LivestreamView.as_view(), name="detail"),
     path("control/", control_views.IndexView.as_view(), name="control_index"),
     path("control/<str:slug>/", control_views.StreamControlView.as_view(), name="control_stream"),
     path("control/<str:slug>/start", control_views.start_stream, name="start_stream"),

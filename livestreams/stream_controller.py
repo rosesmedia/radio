@@ -14,6 +14,8 @@ SOURCES = {
 }
 
 def _stream_controller_post(path: str, data: Optional[Any]=None) -> None:
+    if not settings.STREAM_CONTROLLER_API:
+        return
     if data:
         resp = requests.post(settings.STREAM_CONTROLLER_API + path, json=data, headers=_STREAM_CONTROLLER_HEADERS)
     else:
@@ -32,6 +34,8 @@ def set_source(stream_id: str, source: str) -> None:
     })
 
 def get_source(stream_id: str) -> str:
+    if not settings.STREAM_CONTROLLER_API:
+        return 'technical_difficulties'
     resp = requests.get(settings.STREAM_CONTROLLER_API + '/stream/' + stream_id + '/source', headers=_STREAM_CONTROLLER_HEADERS)
     resp.raise_for_status()
     return str(resp.json()['source'])

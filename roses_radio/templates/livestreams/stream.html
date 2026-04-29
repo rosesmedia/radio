@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ stream.name }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h1>{{ stream.name }}</h1>
+
+            {% if stream.started_at %}
+                {% if stream.ended_at %}
+                    <p>
+                        This stream ended at {{ stream.ended_at }}
+                    </p>
+                {% else %}
+                    <p>
+                        Player goes here.
+                    </p>
+                {% endif %}
+            {% else %}
+                <p>This stream does not start until {{ stream.scheduled_start }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
