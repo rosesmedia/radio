@@ -44,5 +44,27 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy liquidsoap scripts') {
+            when {
+                branch 'trunk'
+            }
+
+            steps {
+                sshPublisher(publishers: [
+                    sshPublisherDesc(
+                        configName: 'uryrosesstream0-liquidsoap',
+                        transfers: [
+                            sshTransfer(
+                                sourceFiles: 'liq/*.liq',
+                                removePrefix: 'liq/',
+                                keepFilePermissions: true,
+                            ),
+                        ],
+                        verbose: true
+                    )
+                ])
+            }
+        }
     }
 }
