@@ -77,7 +77,7 @@ output.srt(
   port=srt_port,
   mode="caller",
   streamid="#{srt_streamid_prefix}/#{stream_id}",
-  read_timeout=10.0,
+  connection_timeout=10.0,
   aac_high,
   stream
 )
