@@ -14,7 +14,7 @@
                     </p>
                 {% else %}
                     <p>
-                        Player goes here.
+                        {% include "player.html" with url=stream.stream_url %}
                     </p>
                 {% endif %}
             {% else %}
