@@ -18,10 +18,7 @@ function Player(props) {
         if (!props.url) return;
         setIsPaused(true);
         setLoading(true);
-        if (audio.current.canPlayType(HLS_MIME)) {
-            console.log('[player] using browser built-in HLS');
-            audio.current.src = props.url;
-        } else if (Hls.isSupported()) {
+        if (Hls.isSupported()) {
             console.log('[player] using hls.js');
             const hls = new Hls({
                 // we need to use the worker to avoid this until we can fix the liquidsoap script
@@ -48,6 +45,9 @@ function Player(props) {
             hls.loadSource(props.url);
             hls.attachMedia(audio.current);
             return () => hls.destroy();
+        } if (audio.current.canPlayType(HLS_MIME)) {
+            console.log('[player] using browser built-in HLS');
+            audio.current.src = props.url;
         } else {
             console.error(
                 'Player initialised when HLS is not supported. This should not happen!'
