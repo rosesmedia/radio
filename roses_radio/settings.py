@@ -159,3 +159,6 @@ CELERY_BROKER_URL = 'amqp://radio:radio@localhost//'
 
 STREAM_CONTROLLER_API = 'http://localhost:1350'
 STREAM_CONTROLLER_API_SECRET = 'changemeplease'
+
+HLS_BASE = 'https://stream.radio.roses.media/roses'
+HLS_PLAYLIST = 'llhls'

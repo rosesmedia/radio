@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
@@ -53,6 +54,9 @@ class Livestream(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} ({Livestream.STATUSES[self.status]})"
+
+    def stream_url(self) -> str:
+        return f"{settings.HLS_BASE}/{self.slug}/{settings.HLS_PLAYLIST}.m3u8"
 
     class Meta:
         permissions = [
