@@ -42,7 +42,7 @@ beeps = metronome(12.0, frequency=1000.0)
 
 ob = fallback([ob_in, beeps], track_sensitive=false)
 
-selected_source = interactive.int("source", 4, description="Active source (1: live input, 2: pre-stream sustainer, 3: post-stream sustainer, 4: technical difficulties sustainer)")
+selected_source = interactive.int("source", 2, description="Active source (1: live input, 2: pre-stream sustainer, 3: post-stream sustainer, 4: technical difficulties sustainer)")
 
 starting = amplify(0.5, single("#{audio_base}/starting.wav"))
 ended = amplify(0.5, single("#{audio_base}/ended.wav"))
