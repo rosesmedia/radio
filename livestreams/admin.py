@@ -11,6 +11,7 @@ class LivestreamTagInline(admin.TabularInline[LivestreamTag, Livestream]):
 class LivestreamAdmin(admin.ModelAdmin[Livestream]):
     prepopulated_fields = {"slug": ["name"]}
     fields = ["name", "slug", "scheduled_start", "ingest_point"]
+    list_display = ["name", "scheduled_start", "ingest_point"]
     inlines = [LivestreamTagInline]
 
 admin.site.register(Livestream, LivestreamAdmin)
