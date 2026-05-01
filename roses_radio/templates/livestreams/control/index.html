@@ -6,7 +6,7 @@
     <ul class="stream-list">
         {% for stream in livestreams %}
             <li>
-                <span class="stream-name">{{ stream.name }}</span>
+                <span class="stream-name">{{ stream.scheduled_start.time }} - {{ stream.name }}</span>
                 <a class="btn" href="{% url 'livestreams:control_stream' stream.slug %}" hx-boost="true">
                     Select &rarr;
                 </a>
