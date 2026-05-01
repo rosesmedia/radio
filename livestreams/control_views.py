@@ -18,6 +18,9 @@ class IndexView(PermissionRequiredMixin, ListView[Livestream]):
     context_object_name = "livestreams"
     permission_required = "livestreams.control_livestream"
 
+    def get_queryset(self):
+        return Livestream.objects.order_by("scheduled_start")
+
 class StreamControlView(PermissionRequiredMixin, DetailView[Livestream]):
     template_name = "livestreams/control/stream.html"
     model = Livestream
